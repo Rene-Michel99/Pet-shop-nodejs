@@ -7,19 +7,19 @@ router.use(express.json());
 router.get("/",(req,res) => {
     res.send("hello world");
 });
-router.get("/read",async(req,res)=>{
-    var data = req.body;
-    var response = await Animal_Controller.find(data);
-    res.send(response);
-});
 router.get("/read_by_owner",async(req,res)=>{
     var data = req.body;
     var response = await Animal_Controller.find_by_owner(data);
     res.send(response);
 });
-router.post("/create",async(req,res) => {
+router.post("/create_animal",async(req,res) => {
     const data = req.body;
-    var status = await Animal_Controller.create(data);
+    var status = await Animal_Controller.create_animal(data);
+    res.send(status);
+});
+router.post("/create_client",async(req,res) => {
+    const data = req.body;
+    var status = await Animal_Controller.create_client(data);
     res.send(status);
 });
 router.put("/update",async(req,res)=>{
@@ -33,4 +33,4 @@ router.delete("/delete",async(req,res) => {
     res.send(status);
 });
 
-router.listen(3000);
+router.listen(5000);

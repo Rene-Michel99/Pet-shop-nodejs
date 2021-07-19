@@ -4,15 +4,20 @@ class Animal_Controller{
     constructor(){
         this.DB = DATABASE;
     }
-    async create(data){
-        const data_client = data.dono;
-        const data_animal = data;
-        var res = await this.DB.create(data_client,data_animal);
+    async create_animal(data){
+        var id = await this.DB.find_by_cpf(data.DonoId);
+        data.DonoId = id;
+        var res = await this.DB.create_animal(data);
         return res;
     }
-    async find(data){
-        var res = await this.DB.find(data);
-        return res;
+    async create_client(data){
+        var id = await this.DB.find_by_cpf(data.cpf);
+        if(id != 0)
+            return {response:"CPF já foi registrado"};
+        else{
+            var status = await this.DB.create_dono(data);
+            return status;
+        }
     }
     async find_by_owner(data){
         var query = data.query;

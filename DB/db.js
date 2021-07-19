@@ -24,11 +24,20 @@ class Database{
         await this.model.animais.sync();
         await this.model.dono.sync();
     }
-    async create(data_client,data_animal){
+    async find_by_cpf(cpf_client){
+        var registro = await this.model.dono.findOne({where:{cpf:cpf_client}});
+        if(registro != null){
+            return registro.id;
+        }
+        else
+            return 0;
+    }
+    async create_animal(data_animal){
+        var status = await this.model.animais.create(data_animal);
+        return status;
+    }
+    async create_dono(data_client){
         var status = await this.model.dono.create(data_client);
-        data_animal.DonoId = status.id;
-
-        status = await this.model.animais.create(data_animal);
         return status;
     }
     async update(to_update,condition){
