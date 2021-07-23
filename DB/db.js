@@ -40,8 +40,12 @@ class Database{
         var status = await this.model.dono.create(data_client);
         return status;
     }
-    async update(to_update,condition){
-        var status = await this.model.update(to_update,condition);
+    async update_client(to_update,condition){
+        var status = await this.model.dono.update(to_update,condition);
+        return status;
+    }
+    async update_animal(to_update,condition){
+        var status = await this.model.animais.update(to_update,condition);
         return status;
     }
     async find_animal(query){
@@ -63,8 +67,25 @@ class Database{
         );
         return response;
     }
-    async delete(query){
-        var response = await this.model.animais.destroy(query);
+    async delete_client(query){
+        var data = await this.model.dono.findOne({
+            where:query
+        });
+
+        if(data != 0){
+            var rs = await this.model.animais.destroy({where:{
+                DonoId:data.id
+            }});
+
+            var response = await this.model.dono.destroy({
+                where:query}
+            );
+            return response;
+        }
+        return 0;
+    }
+    async delete_animal(query){
+        var response = await this.model.dono.destroy(query);
         return response;
     }
 }
